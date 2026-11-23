@@ -29,6 +29,7 @@ e cria as imagens do projeto: `projeto-final-api` e `projeto-final-web`.
 - Documentação da API (Swagger): http://localhost:8080/api/docs
 - Desligar: `docker compose down`
 
+link do Trello:https://trello.com/invite/b/6af504904a741fa940a2c75e/ATTI093ad5b3d4134554995ccc0280820eacB9A53FC4/grupo-3
 Para ver as imagens criadas: `docker compose images`
 
 ## Modo 2 · Publicar no Docker Hub e usar a imagem pronta (opcional)
