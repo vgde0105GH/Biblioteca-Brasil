@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { ProdutosModule } from './produtos/produtos.module';
+import { SituacaoController } from './situacao.controller';
+import { LivrosModule } from './livros/livros.module';
+import { RetiradasModule } from './retiradas/retiradas.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 
 // Dados do banco: vêm do arquivo .env, entregue pelo Docker
 function lerVariavel(nome: string): string {
@@ -28,8 +30,10 @@ function lerVariavel(nome: string): string {
         synchronize: false,
       }),
     }),
-    ProdutosModule,
+    LivrosModule,
+    RetiradasModule,
+    UsuariosModule,
   ],
-  controllers: [AppController],
+  controllers: [SituacaoController],
 })
 export class AppModule {}
