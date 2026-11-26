@@ -31,6 +31,34 @@ export class Usuario {
   @Column({ length: 11 })
   telefone!: string;
 
+  @ApiProperty()
+  @Column({ type: 'char', length: 8 })
+  cep!: string;
+
+  @ApiProperty()
+  @Column({ length: 150 })
+  logradouro!: string;
+
+  @ApiProperty()
+  @Column({ length: 20 })
+  numero!: string;
+
+  @ApiProperty({ nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  complemento!: string | null;
+
+  @ApiProperty()
+  @Column({ length: 100 })
+  bairro!: string;
+
+  @ApiProperty()
+  @Column({ length: 100 })
+  cidade!: string;
+
+  @ApiProperty()
+  @Column({ type: 'char', length: 2 })
+  estado!: string;
+
   @Column({ name: 'senha_hash', length: 161, select: false })
   senhaHash!: string;
 

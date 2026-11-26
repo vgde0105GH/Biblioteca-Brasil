@@ -64,3 +64,11 @@ localhost:3000        localhost:8080         (online, fora do Docker)
 ## Como me ajudar
 - Sou estudante: explique cada mudança em português, de forma simples.
 - Trabalhe em etapas pequenas e diga como eu testo cada uma.
+
+## Etapa atual da interface
+
+- O frontend mostra somente o cadastro de leitores da Biblioteca Brasil.
+- A página inicial e os caminhos antigos redirecionam para /cadastro.
+- Não recriar telas de login, acervo, cadastro de livros ou retiradas sem solicitação.
+- O backend e o SQL da biblioteca ficam preservados para as etapas seguintes.
+- Manter node_modules local para o VS Code reconhecer imports e tipos; não incluir no Git.

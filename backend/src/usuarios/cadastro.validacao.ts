@@ -28,6 +28,14 @@ export function validarCadastro(dados: CadastroUsuarioDto | undefined) {
   const telefoneInformado = typeof dados?.telefone === 'string' ? dados.telefone.trim() : '';
   const cpf = cpfInformado.replace(/\D/g, '');
   const telefone = telefoneInformado.replace(/\D/g, '');
+  const cepInformado = typeof dados?.cep === 'string' ? dados.cep.trim() : '';
+  const cep = cepInformado.replace(/\D/g, '');
+  const logradouro = typeof dados?.logradouro === 'string' ? dados.logradouro.trim() : '';
+  const numero = typeof dados?.numero === 'string' ? dados.numero.trim() : '';
+  const complemento = typeof dados?.complemento === 'string' ? dados.complemento.trim() : '';
+  const bairro = typeof dados?.bairro === 'string' ? dados.bairro.trim() : '';
+  const cidade = typeof dados?.cidade === 'string' ? dados.cidade.trim() : '';
+  const estado = typeof dados?.estado === 'string' ? dados.estado.trim().toUpperCase() : '';
   const senha = typeof dados?.senha === 'string' ? dados.senha : '';
   const caracteres = [...senha].length;
   const parteLocal = email.split('@')[0];
@@ -45,6 +53,27 @@ export function validarCadastro(dados: CadastroUsuarioDto | undefined) {
   if (!/^(\d{10,11}|\(\d{2}\)\s?\d{4,5}-\d{4})$/.test(telefoneInformado)) {
     throw new BadRequestException('Informe um telefone com DDD.');
   }
+  if (!/^\d{5}-?\d{3}$/.test(cepInformado)) {
+    throw new BadRequestException('Informe um CEP válido.');
+  }
+  if (!logradouro || logradouro.length > 150) {
+    throw new BadRequestException('Informe um logradouro com até 150 caracteres.');
+  }
+  if (!numero || numero.length > 20) {
+    throw new BadRequestException('Informe o número do endereço com até 20 caracteres.');
+  }
+  if (complemento.length > 100) {
+    throw new BadRequestException('O complemento deve ter até 100 caracteres.');
+  }
+  if (!bairro || bairro.length > 100) {
+    throw new BadRequestException('Informe um bairro com até 100 caracteres.');
+  }
+  if (!cidade || cidade.length > 100) {
+    throw new BadRequestException('Informe uma cidade com até 100 caracteres.');
+  }
+  if (!/^[A-Z]{2}$/.test(estado)) {
+    throw new BadRequestException('Informe a sigla do estado com duas letras.');
+  }
   if (!senha.trim() || caracteres < 8 || caracteres > 128) {
     throw new BadRequestException('Use uma senha de 8 a 128 caracteres.');
   }
@@ -55,5 +84,5 @@ export function validarCadastro(dados: CadastroUsuarioDto | undefined) {
     throw new BadRequestException('O cadastro público aceita a categoria Usuário Individual.');
   }
 
-  return { nome, email, cpf, telefone, senha };
+  return { nome, email, cpf, telefone, cep, logradouro, numero, complemento: complemento || null, bairro, cidade, estado, senha };
 }

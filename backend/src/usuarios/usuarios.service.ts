@@ -33,7 +33,8 @@ export class UsuariosService {
   ) {}
 
   async cadastrar(dados: CadastroUsuarioDto): Promise<ContaCriadaDto> {
-    const { nome, email, cpf, telefone, senha } = validarCadastro(dados);
+    const { nome, email, cpf, telefone, cep, logradouro, numero, complemento, bairro, cidade, estado, senha } =
+      validarCadastro(dados);
     const mensagemDuplicidade = 'Já existe uma conta com esse CPF ou e-mail.';
 
     if (await this.usuarios.existsBy([{ cpf }, { email }])) {
@@ -46,7 +47,8 @@ export class UsuariosService {
 
     try {
       const usuario = await this.usuarios.save({
-        nome, email, cpf, telefone, categoria, senhaHash: `${sal}:${hash.toString('hex')}`,
+        nome, email, cpf, telefone, cep, logradouro, numero, complemento, bairro, cidade, estado,
+        categoria, senhaHash: `${sal}:${hash.toString('hex')}`,
       });
       return { id: usuario.id, categoria };
     } catch (erro) {

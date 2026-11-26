@@ -1,17 +1,23 @@
-import type { DadosLivro, Livro, Retirada } from '@/interfaces/livro.interface'
 import axios, { type AxiosRequestConfig } from 'axios'
-import type { CadastroUsuario, ContaAutenticada, DadosLogin } from '@/interfaces/usuario.interface'
+import type { CadastroUsuario } from '@/interfaces/usuario.interface'
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL })
 
-
 export class ErroApi extends Error {
   constructor(public status: number, public mensagem: string) {
-    super(`A API respondeu com erro ${status}`)
+    super(mensagem || `A API respondeu com erro ${status}`)
   }
 }
 
-// Toda chamada à API passa por aqui.
+export interface EnderecoCep {
+  cep: string
+  state: string
+  city: string
+  neighborhood: string
+  street: string
+}
+
+// As chamadas à API da biblioteca passam por esta função.
 async function pedir<T>(caminho: string, opcoes: AxiosRequestConfig = {}): Promise<T | null> {
   try {
     const resposta = await api.request<T>({ url: caminho, ...opcoes })
@@ -25,28 +31,26 @@ async function pedir<T>(caminho: string, opcoes: AxiosRequestConfig = {}): Promi
   }
 }
 
+export async function consultarCep(cep: string): Promise<EnderecoCep> {
+  const cepNumerico = cep.replace(/\D/g, '')
+  try {
+    const resposta = await pedir<EnderecoCep>(
+      `https://brasilapi.com.br/api/cep/v2/${cepNumerico}`,
+      { timeout: 8000 },
+    )
+    if (!resposta) throw new ErroApi(502, 'A consulta do CEP não retornou um endereço.')
+    return resposta
+  } catch (erro) {
+    if (erro instanceof ErroApi) {
+      if (erro.status === 404) throw new ErroApi(404, 'CEP não encontrado. Confira os números e tente novamente.')
+      throw new ErroApi(erro.status, 'A consulta do CEP está indisponível. Tente novamente.')
+    }
+    if (axios.isAxiosError(erro)) {
+      throw new ErroApi(0, 'Não foi possível consultar o CEP. Verifique sua conexão e tente novamente.')
+    }
+    throw erro
+  }
+}
+
 export const cadastrarUsuario = (cadastro: CadastroUsuario) =>
-  pedir('/api/usuarios', { method: 'POST', data: cadastro })
-
-export const entrarNaConta = (dados: DadosLogin) =>
-  pedir<ContaAutenticada>('/api/usuarios/sessao', { method: 'POST', withCredentials: true, data: dados })
-
-export const consultarSessao = () =>
-  pedir<ContaAutenticada>('/api/usuarios/sessao', { withCredentials: true })
-
-export const sairDaConta = () =>
-  pedir('/api/usuarios/sessao', { method: 'DELETE', withCredentials: true })
-
-export const listarLivros = () => pedir<Livro[]>('/api/livros')
-
-export const cadastrarLivro = (livro: DadosLivro) =>
-  pedir('/api/livros', { method: 'POST', data: livro })
-
-export const listarMinhasRetiradas = () =>
-  pedir<Retirada[]>('/api/retiradas', { withCredentials: true })
-
-export const retirarLivro = (livroId: number) =>
-  pedir('/api/retiradas', { method: 'POST', data: { livroId }, withCredentials: true })
-
-export const devolverLivro = (id: number) =>
-  pedir(`/api/retiradas/${id}/devolucao`, { method: 'PATCH', withCredentials: true })
+  pedir<{ id: number; categoria: 'individual' }>('/api/usuarios', { method: 'POST', data: cadastro })

@@ -1,36 +1,25 @@
-<script setup lang="ts">
-import capa from '@/assets/livro-capa.jpg'
-import capaCelular from '@/assets/livro-capa-mobile.jpg'
-</script>
-
 <template>
   <div class="pagina-conta">
+    <a class="pular-cadastro" href="#formulario-cadastro">Ir para o cadastro</a>
     <header class="topo-conta">
-      <div class="largura-conta navegacao-biblioteca">
-        <RouterLink class="marca-biblioteca" :to="{ name: 'livros' }" aria-label="Biblioteca Brasil, início">
-          <span class="marca-livro" aria-hidden="true"></span>
-          <span>biblioteca brasil</span>
-        </RouterLink>
-        <RouterLink class="voltar-biblioteca" :to="{ name: 'livros' }">
-          <span aria-hidden="true">←</span> Voltar à biblioteca
-        </RouterLink>
-      </div>
+      <a href="#inicio" class="marca-biblioteca" aria-label="Biblioteca Brasil, início">
+        <svg class="marca-icone" viewBox="0 0 36 36" aria-hidden="true">
+          <path d="M18 11c-3.5-2-7.4-2.1-11-.7v14.8c3.6-1.4 7.5-1.3 11 .7m0-14.8c3.5-2 7.4-2.1 11-.7v14.8c-3.6-1.4-7.5-1.3-11 .7m0-14.8v14.8" />
+        </svg>
+        <span class="marca-nome">biblioteca<span>brasil</span></span>
+      </a>
+      <nav aria-label="Navegação do cadastro">
+        <span class="rotulo-topo">Cadastro de leitores</span>
+        <a class="link-cadastro" href="#formulario-cadastro">Criar minha conta</a>
+      </nav>
     </header>
-
-    <div class="largura-conta miolo-conta">
-      <aside class="painel-biblioteca" aria-label="Apresentação da biblioteca">
-        <picture class="capa-biblioteca">
-          <source media="(max-width: 860px)" :srcset="capaCelular" />
-          <img :src="capa" alt="" fetchpriority="high" />
-        </picture>
-        <p class="frase-biblioteca">O próximo <br />capítulo <br />é seu.</p>
-      </aside>
-
-      <section class="painel-conta" aria-labelledby="titulo-conta">
-        <slot />
-      </section>
-    </div>
+    <main id="inicio" class="conteudo-cadastro">
+      <slot />
+    </main>
+    <footer class="rodape-pagina">
+      <span>Biblioteca Brasil</span>
+      <span>Cadastro de leitores</span>
+    </footer>
   </div>
 </template>
-
 <style src="@/assets/conta.css"></style>

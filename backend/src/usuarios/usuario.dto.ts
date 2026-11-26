@@ -14,6 +14,27 @@ export class CadastroUsuarioDto {
   @ApiProperty({ example: '(11) 99999-1234' })
   telefone!: string;
 
+  @ApiProperty({ example: '90000-000' })
+  cep!: string;
+
+  @ApiProperty({ maxLength: 150, example: 'Rua das Flores' })
+  logradouro!: string;
+
+  @ApiProperty({ maxLength: 20, example: '123' })
+  numero!: string;
+
+  @ApiProperty({ maxLength: 100, example: 'Apartamento 4', nullable: true })
+  complemento!: string | null;
+
+  @ApiProperty({ maxLength: 100, example: 'Centro' })
+  bairro!: string;
+
+  @ApiProperty({ maxLength: 100, example: 'Santa Cruz do Sul' })
+  cidade!: string;
+
+  @ApiProperty({ minLength: 2, maxLength: 2, example: 'RS' })
+  estado!: string;
+
   @ApiProperty({ format: 'password', minLength: 8, maxLength: 128 })
   senha!: string;
 

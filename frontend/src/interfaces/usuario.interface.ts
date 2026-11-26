@@ -3,16 +3,14 @@ export interface CadastroUsuario {
   email: string
   cpf: string
   telefone: string
+  cep: string
+  logradouro: string
+  numero: string
+  complemento: string
+  bairro: string
+  cidade: string
+  estado: string
   senha: string
   confirmarSenha: string
   categoria: 'individual'
-}
-
-export interface DadosLogin {
-  email: string
-  senha: string
-}
-
-export interface ContaAutenticada {
-  nome: string
 }
