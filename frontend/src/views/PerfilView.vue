@@ -1,17 +1,47 @@
 
 <script setup lang="ts">
-import { ref, computed, onBeforeUnmount } from 'vue'
+import { ref, computed, watch } from 'vue'
+
+// CARREGAR DADOS SALVOS
+function carregarDados() {
+  try {
+    return JSON.parse(localStorage.getItem('perfilUsuario') || '{}')
+  } catch {
+    return {}
+  }
+}
+
+const dadosSalvos = carregarDados()
 
 // DADOS DO USUÁRIO
-const nome = ref('Nome do usuário')
-const bio = ref('Bio')
+const nome = ref(dadosSalvos.nome || 'Nome do usuário')
+const bio = ref(dadosSalvos.bio || 'Bio')
 
 const descricao = ref(
+  dadosSalvos.descricao ||
   'Esta é a descrição do usuário. Aqui você pode escrever sobre seus gostos, seus livros favoritos, suas experiências de leitura e outras informações interessantes. A descrição pode ser bem grande e terá a opção de continuar lendo.'
 )
 
+// SALVAR DADOS AUTOMATICAMENTE
+watch(
+  [nome, bio, descricao],
+  () => {
+    localStorage.setItem(
+      'perfilUsuario',
+      JSON.stringify({
+        nome: nome.value,
+        bio: bio.value,
+        descricao: descricao.value
+      })
+    )
+  }
+)
+
 // FOTO DE PERFIL
-const foto = ref<string | null>(null)
+const foto = ref<string | null>(
+  localStorage.getItem('fotoPerfil')
+)
+
 const arquivoFoto = ref<HTMLInputElement | null>(null)
 
 function abrirArquivos() {
@@ -19,20 +49,45 @@ function abrirArquivos() {
 }
 
 function selecionarFoto(event: Event) {
-  const arquivo = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const arquivo = input.files?.[0]
 
   if (!arquivo) return
 
   if (!arquivo.type.startsWith('image/')) {
     alert('Selecione um arquivo de imagem!')
+    input.value = ''
     return
   }
 
-  if (foto.value) {
-    URL.revokeObjectURL(foto.value)
+  // Limite de 3 MB para evitar exceder o armazenamento
+  if (arquivo.size > 3 * 1024 * 1024) {
+    alert('Escolha uma imagem de até 3 MB!')
+    input.value = ''
+    return
   }
 
-  foto.value = URL.createObjectURL(arquivo)
+  const leitor = new FileReader()
+
+  leitor.onload = () => {
+    const resultado = leitor.result as string
+
+    try {
+      localStorage.setItem('fotoPerfil', resultado)
+      foto.value = resultado
+    } catch {
+      alert('Não foi possível salvar a foto. Tente uma imagem menor.')
+    }
+
+    input.value = ''
+  }
+
+  leitor.onerror = () => {
+    alert('Erro ao carregar a imagem!')
+    input.value = ''
+  }
+
+  leitor.readAsDataURL(arquivo)
 }
 
 // DESCRIÇÃO
@@ -65,16 +120,23 @@ function salvarAlteracoes() {
     return
   }
 
-  paginaAtual.value = 'Sobre'
-  alert('Perfil atualizado com sucesso!')
+  try {
+    localStorage.setItem(
+      'perfilUsuario',
+      JSON.stringify({
+        nome: nome.value,
+        bio: bio.value,
+        descricao: descricao.value
+      })
+    )
+
+    paginaAtual.value = 'Sobre'
+    alert('Perfil atualizado com sucesso!')
+  } catch {
+    alert('Não foi possível salvar as informações!')
+  }
 }
 
-// LIMPAR URL DA FOTO
-onBeforeUnmount(() => {
-  if (foto.value) {
-    URL.revokeObjectURL(foto.value)
-  }
-})
 </script>
 
 <template>
@@ -302,16 +364,12 @@ onBeforeUnmount(() => {
   border-radius: 18px;
 }
 
-/* CABEÇALHO */
-
 .cabecalho {
   display: flex;
   align-items: center;
   gap: 18px;
   margin-bottom: 14px;
 }
-
-/* FOTO */
 
 .area-foto {
   width: 185px;
@@ -368,8 +426,6 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   font-size: 17px;
 }
-
-/* CARTÃO DO PERFIL */
 
 .cartao-perfil {
   flex: 1;
@@ -441,15 +497,11 @@ onBeforeUnmount(() => {
   font-size: 24px;
 }
 
-/* ESTRUTURA */
-
 .estrutura {
   display: flex;
   gap: 14px;
   min-height: calc(100vh - 225px);
 }
-
-/* MENU */
 
 .menu {
   width: 210px;
@@ -500,8 +552,6 @@ onBeforeUnmount(() => {
   margin-top: 30px;
 }
 
-/* PAINEL */
-
 .painel {
   flex: 1;
   min-width: 0;
@@ -519,8 +569,6 @@ onBeforeUnmount(() => {
 .conteudo-painel p {
   color: #4c6756;
 }
-
-/* GERENCIADOR */
 
 .gerenciador {
   max-width: 600px;
@@ -577,8 +625,6 @@ onBeforeUnmount(() => {
   background: #087a3b;
 }
 
-/* MODAL */
-
 .fundo-modal {
   position: fixed;
   inset: 0;
@@ -628,8 +674,6 @@ onBeforeUnmount(() => {
   border-radius: 8px;
   cursor: pointer;
 }
-
-/* CELULAR */
 
 @media (max-width: 650px) {
   .cabecalho {
