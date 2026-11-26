@@ -41,13 +41,13 @@ onMounted(carregar)
 </script>
 
 <template>
-  <h1>Produtos</h1>
+  <h1>Produtddos</h1>
 
   <form @submit.prevent="salvar">
     <input v-model="novo.nome" placeholder="Nome" required />
     <input v-model.number="novo.preco" type="number"
            step="0.01" min="0" required />
-    <button type="submit">Adicionar</button>
+    <button type="submit">Adiciddonar</button>
   </form>
 
   <p v-if="erro" class="erro">{{ erro }}</p>
