@@ -1,58 +1,48 @@
-# Revisão do cadastro — Biblioteca Brasil
+# Verificação da interface — Biblioteca Brasil
 
-final result: passed
+Revisão de 27/11/2026: refatoração do cadastro, sem alteração visual.
 
-## Referência e escopo
+## Interface atual
 
-Referência: imagem de cadastro enviada pelo usuário nesta conversa (774 × 401 pixels).
-Pedido: usar a composição como inspiração, melhorar o visual e deixar somente o cadastro.
-Correção de marca confirmada pelo usuário: Biblioteca Brasil, sem SAPIENS.
+Cadastro em cartão central, com duas etapas: dados pessoais e endereço.
+Mantidos os campos, cores verdes, banner com bandeira brasileira, acesso ao login,
+validação da senha, busca de CEP e preenchimento manual do endereço.
+Animações de entrada executam uma vez; botões e etapas mantêm as transições.
+A preferência por movimento reduzido é respeitada.
 
-A implementação é uma adaptação da referência: cabeçalho simples, apresentação central,
-cartão de cadastro, campos organizados em colunas e chamada de ação turquesa.
-O usuário pediu melhoria visual, portanto não foi buscada reprodução pixel a pixel.
+## Organização
 
-## Evidências visuais
+- CadastroUsuario.vue e AcessoUsuario.vue: apresentação das telas.
+- usarCadastroUsuario.ts: estado, etapas, consulta de CEP e envio do cadastro.
+- cadastro.validacao.ts: máscaras e validações do formulário.
+- estrutura-conta.css, formulario-conta.css e animacoes-conta.css: estilos por responsabilidade.
 
-- Desktop: C:/Users/MARIANAMACHADO/Projeto Final - senac/verificacao-layout/cadastro-brasil-desktop.png
-- Celular: C:/Users/MARIANAMACHADO/Projeto Final - senac/verificacao-layout/cadastro-brasil-celular.png
-- Viewport desktop: 1440 × 1100 CSS px; captura completa da página; densidade 1.
-- Viewport celular: 390 × 844 CSS px; captura completa da página; densidade 1.
-- Estado: formulário vazio, sem autenticação.
-- Fonte local: Space Grotesk, já presente no projeto.
-- Paleta: fundo claro, cartão branco, texto escuro e turquesa.
-- Sem imagens decorativas ou novos recursos externos.
+Foram removidas 94 declarações CSS repetidas, além de regras de elementos que
+já não existem. Os imports e as referências aos arquivos renomeados foram atualizados.
+AGENTS.md e CLAUDE.md permanecem idênticos. Banco e SQL sem alterações.
 
-## Testes de navegador
+## Verificações realizadas
 
-Browser plugin not available. Playwright com Chrome, autorizado pelo usuário.
-Chamadas da API simuladas; nenhum registro criado no banco remoto.
+Builds de API e frontend no Docker passaram, incluindo vue-tsc.
+Playwright com Chrome, autorizado pelo usuário, verificou:
 
-- Marca e título Biblioteca Brasil, sem SAPIENS.
-- Rota inicial e rotas antigas redirecionam para /cadastro.
-- Formulário vazio não envia e foca o primeiro campo inválido.
-- CPF e telefone aplicam suas máscaras.
-- Mostrar e ocultar senha funciona.
-- Senhas diferentes impedem envio.
-- Primeiro nome e sobrenome chegam juntos no campo nome.
-- Categoria enviada permanece individual.
-- Envio válido mostra confirmação na mesma página e foca seu título.
-- Fazer outro cadastro retorna ao formulário.
-- Resposta 409 mostra o erro e preserva os dados preenchidos.
-- Formulário sem rolagem horizontal no celular.
-- Nenhum erro JavaScript nos fluxos testados.
+- Formulário vazio, mensagens e foco no campo inválido.
+- Senha curta em vermelho e limpeza do erro ao corrigir.
+- Avanço por Enter, duas etapas e retorno mantendo os dados.
+- Busca de CEP, endereço manual e complemento opcional.
+- Limpeza dos erros de endereço após correção.
+- Cadastro concluído, novo cadastro e mensagem de duplicidade.
+- Acesso ao login, credenciais inválidas, entrada e saída.
+- Responsividade em 320, 390, 768 e 1440 pixels.
 
-## Verificação técnica
+A comparação dos estilos calculados de todos os elementos e pseudoelementos,
+antes e depois, encontrou zero diferenças nas quatro larguras, em estado normal
+e com foco. API e CEP foram simulados nos testes de navegador, sem gravação no banco.
 
-Frontend compilado no Docker, incluindo vue-tsc.
-Backend preservado, sem alterações nesta etapa.
-As demais telas, estilos exclusivos e imagens sem uso foram retirados do frontend,
-com cópia de segurança fora do projeto.
-Dependências locais foram mantidas para o VS Code.
+O serviço de cadastro também foi verificado com repositório simulado: normalização,
+campos permitidos, hash da senha, rejeição de dados inválidos e duplicidade.
+A persistência no MySQL real não foi testada nesta revisão.
 
-## Limites
-
-O teste de persistência com dados reais no alwaysdata não foi executado.
-As tabelas de usuários e os dados de conexão precisam existir para cadastro real.
-Login, acervo e retiradas não têm telas nesta etapa, conforme solicitado.
-
+Capturas externas ao repositório, abertas para inspeção:
+refatoracao-depois.png, cadastro-final-desktop.png, cadastro-final-endereco.png
+e cadastro-final-celular.png, na pasta Projeto Final - senac/verificacao-layout.

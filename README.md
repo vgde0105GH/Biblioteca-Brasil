@@ -1,103 +1,96 @@
-# Biblioteca Brasil · Projeto Final Senac
+# Biblioteca Brasil — Cadastro de usuários
 
-## Etapa atual: cadastro de leitores
+Esta etapa contém cadastro de leitores, com dados pessoais e endereço, e login.
+O frontend usa Vue 3, TypeScript e Axios; a API usa NestJS 11, TypeORM e mysql2.
+Livros e retiradas continuam fora desta etapa. O login usa sessões por cookie HttpOnly.
 
-O frontend mostra somente o cadastro de leitores, inspirado na referência enviada pelo usuário.
-A marca é Biblioteca Brasil. Não há navegação para login, acervo ou retiradas nesta etapa.
-As rotas antigas redirecionam para /cadastro.
+## Executar e conferir
 
-A tela é dividida em duas etapas: dados pessoais e endereço. O CEP pode ser consultado
-na BrasilAPI para preencher rua, bairro, cidade e estado; os campos continuam editáveis.
-O cadastro também coleta número e complemento do endereço.
-Primeiro nome e sobrenome são enviados juntos no campo nome da API.
-A conta criada é sempre individual. CPF, telefone e confirmação são exigidos pela API.
-O cadastro mostra a confirmação na própria página e trata erros sem apagar os dados preenchidos.
-
-## Executar
-
-Abra o Docker Desktop. Na raiz do projeto:
+Abra o Docker Desktop e execute na raiz:
 
 ```powershell
 docker compose up --build
 ```
 
-- Cadastro: http://localhost:3000/cadastro
-- API: http://localhost:8080/api
-- Swagger: http://localhost:8080/api/docs
-- Conferir builds: docker compose build api web
-- Desligar: docker compose down
+Tela: http://localhost:3000/cadastro
+API: http://localhost:8080/api
+Swagger: http://localhost:8080/api/docs
 
-As dependências são instaladas pelo Docker. node_modules local é mantido para o editor
-e fica fora do Git. Não usar npm install no computador.
+Builds: docker compose build api web.
+Não usar npm install no computador. Dependências são instaladas pelo Docker.
+Manter node_modules local para o VS Code reconhecer tipos; a pasta fica fora do Git.
 
-## Banco no alwaysdata
+## DBeaver: usuários e sessões
 
-Os dados de conexão ficam somente no .env da raiz. Não publicar nem compartilhar seu conteúdo.
-O MySQL fica online, fora do Docker. O TypeORM mantém synchronize: false.
+O banco MySQL continua no alwaysdata. Não criar um banco local.
+Selecione o banco do projeto no DBeaver e execute backend/banco/usuarios.sql (Alt + X).
+Esse script cria usuarios com os dados pessoais, endereço e senha protegida.
+Ele não apaga nem altera tabelas existentes.
 
-Para um banco novo, execute backend/banco/biblioteca.sql no DBeaver.
-Para um banco existente, execute uma vez backend/banco/adicionar-endereco-usuarios.sql
-no DBeaver antes de usar a nova etapa de endereço. A migração adiciona os campos de
-endereço sem apagar os usuários existentes.
-Para a tela atual funcionar, as tabelas de usuários precisam estar criadas.
-O script backend/banco/atualizar-detalhes-livros.sql é apenas para bancos antigos
-que ainda não têm as colunas extras de livros; não é necessário para cadastrar leitores.
+Se usuarios já existe sem os campos de endereço, execute uma única vez
+backend/banco/adicionar-endereco-usuarios.sql. Não repita se as colunas já existirem.
+O login também precisa de sessoes_usuarios: execute sessoes-usuarios.sql. Não criar livros ou retiradas.
+Não apagar tabelas antigas que já contenham dados: elas apenas deixaram de ser usadas.
 
-Nenhuma alteração de banco é executada automaticamente.
+Os dados da conexão ficam somente no .env da raiz. Não publicar seu conteúdo.
+O TypeORM usa synchronize: false; nenhuma mudança de tabela é automática.
+Primeiro nome e sobrenome são enviados juntos em nome. A confirmação da senha
+é validada, mas não é gravada; apenas senha_hash é armazenada.
 
 ## Organização
 
-```text
-frontend/src/
-  components/
-    input/
-      CampoTexto.vue
-      CampoSenha.vue
-    LayoutConta.vue
-    FormularioConta.vue
-  views/
-    CadastroView.vue
-  interfaces/
-    usuario.interface.ts
-  services/
-    api.ts
-  validacoes/
-    cadastro.validacao.ts
-  router/
-    index.ts
-  assets/
-    conta.css
-```
+- backend/src/usuarios/: entidade, DTO, validação, service, controller e module.
+- backend/banco/: criação da tabela e atualização de endereço para bancos antigos.
+- frontend/src/views/: CadastroUsuario.vue e AcessoUsuario.vue contêm as telas.
+- frontend/src/composables/: usarCadastroUsuario.ts controla etapas e envio; usarEnderecoCadastro.ts controla consulta de CEP e correção dos erros de endereço.
+- frontend/src/interfaces/cadastro-usuario.interface.ts: tipos dos dados e erros.
+- frontend/src/assets/: estrutura-conta.css (página e banner), formulario-conta.css (cartões e etapas), campos-conta.css (inputs e erros), botoes-conta.css (ações) e animacoes-conta.css (movimentos).
+- frontend/src/components/: layout, formulário e campos reutilizáveis.
+- frontend/src/components/cadastro/: EtapaDadosPessoais.vue e EtapaEndereco.vue, com os campos de cada etapa.
+- frontend/src/services/api.ts: chamadas HTTP do cadastro, CEP, login e sessão.
+- frontend/src/validacoes/: máscaras e validações.
+- docs/: referências das aulas, sem código usado pela aplicação.
 
-O backend mantém seus módulos de usuarios, livros e retiradas para as próximas etapas,
-sem expor essas telas no frontend. A regra de no máximo 5 retiradas ativas por pessoa
-continua na API.
-
-## Rotas da API preservadas
+## Rotas
 
 | Verbo | Rota | Finalidade |
 |---|---|---|
-| GET | /api | Situação da API |
-| POST | /api/usuarios | Cadastro individual usado pela tela atual |
-| POST | /api/usuarios/sessao | Entrar, disponível somente na API nesta etapa |
+| GET | /api | Conferir se a API está no ar |
+| POST | /api/usuarios | Cadastrar leitor individual |
+| POST | /api/usuarios/sessao | Entrar |
 | GET | /api/usuarios/sessao | Consultar sessão |
 | DELETE | /api/usuarios/sessao | Sair |
-| GET | /api/livros | Acervo |
-| GET | /api/livros/{id} | Consultar exemplar |
-| POST | /api/livros | Cadastrar exemplar |
-| GET | /api/retiradas | Minhas retiradas |
-| POST | /api/retiradas | Retirar exemplar |
-| PATCH | /api/retiradas/{id}/devolucao | Devolver exemplar |
+| GET | /api/docs | Documentação Swagger |
 
-Exemplos manuais: backend/Api.http.
+Exemplos: backend/usuarios.http.
 
-## Conferir o cadastro
+## Como testar
 
-1. Abra /cadastro no computador e no celular.
-2. Tente enviar vazio: o primeiro campo inválido deve receber o foco.
-3. Preencha seus dados e confira a máscara de CPF e telefone.
-4. Senhas diferentes devem impedir o avanço para a etapa de endereço.
-5. Consulte um CEP válido e confira os campos preenchidos; teste também CEP inválido.
-6. Preencha número e confira os demais dados do endereço antes de concluir.
-7. Um cadastro válido mostra a confirmação na mesma página.
-8. CPF ou e-mail repetidos mostram a mensagem da API e preservam o formulário.
+1. Envie os dados pessoais vazios: o primeiro erro deve receber foco.
+2. Preencha os dados e avance com o botão ou Enter.
+3. Informe um CEP e use Buscar CEP, ou preencha o endereço manualmente.
+4. O complemento é opcional. Voltar mantém os dados pessoais.
+5. Conclua para ver a confirmação na própria tela.
+6. CPF ou e-mail repetidos devem mostrar um erro sem apagar o formulário.
+
+A busca de CEP usa BrasilAPI e pode falhar por indisponibilidade da rede.
+O preenchimento manual continua disponível.
+## Identidade visual
+
+Bandeira em frontend/src/assets/bandeira-brasil.svg, armazenada localmente.
+Fonte: https://commons.wikimedia.org/wiki/File:Flag_of_Brazil.svg (domínio público).
+A imagem inteira é exibida sem cortes, como parte do banner superior.
+As animações de entrada rodam uma vez ao carregar a página; transições continuam
+nas interações. Não há botão de pausa nem animações contínuas.
+## Login adicionado
+
+O cadastro agora tem o botão Já tenho cadastro, que abre /login.
+Para habilitar sessões no banco existente, execute backend/banco/sessoes-usuarios.sql
+uma vez no DBeaver, após usuarios.sql. Nenhum SQL é executado automaticamente.
+Login verifica a senha protegida e cria cookie HttpOnly; o token é armazenado no banco
+somente como hash, com validade de 24 horas. O logout encerra a sessão.
+
+
+Foram removidos os textos fixos sobre senha e CPF/telefone da tela.
+A senha curta mostra o campo vermelho e a mensagem enquanto estiver inválida.
+A reorganização dos arquivos não altera as tabelas nem exige executar SQL novamente no DBeaver.

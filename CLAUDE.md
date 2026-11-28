@@ -23,7 +23,7 @@ localhost:3000        localhost:8080         (online, fora do Docker)
 - Conferir se compila: `docker compose build api` e `docker compose build web`. O build do frontend roda a checagem de tipos com `vue-tsc`.
 - Desligar: `docker compose down`
 - Não há testes automatizados nem lint. As rotas da API são testadas à mão com
-  `backend/Api.http` (extensão REST Client do VS Code) ou pelo Swagger em
+  `backend/usuarios.http` (extensão REST Client do VS Code) ou pelo Swagger em
   http://localhost:8080/api/docs (configurado em `backend/src/main.ts`).
 
 ## Arquitetura (o que não é óbvio)
@@ -31,7 +31,7 @@ localhost:3000        localhost:8080         (online, fora do Docker)
   `*.entity.ts` (tabela), `*.dto.ts` (dados enviados pelo cliente), `*.service.ts` (acesso ao banco via `Repository` do TypeORM),
   `*.controller.ts` (rotas) e `*.module.ts`. O módulo é importado em `src/app.module.ts`.
 - **TypeORM com `synchronize: false`**: as tabelas já existem no alwaysdata e o TypeORM
-  nunca as altera. Tabela nova = executar o SQL manualmente no DBeaver. O acervo usa livros e retiradas, sem preço ou venda.
+  nunca as altera. Tabela nova = executar o SQL manualmente no DBeaver. Nesta etapa, a aplicação usa usuarios e sessoes_usuarios para cadastro e login.
 - **Banco**: chega pelas variáveis `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
   (do `.env`, via `env_file` do compose), lidas em `src/app.module.ts`. Sem elas a API não
   sobe. O formato está em `.env.example`.
@@ -47,8 +47,8 @@ localhost:3000        localhost:8080         (online, fora do Docker)
 1. Pasta `backend/src/<entidade>/` com entity, DTO, service, controller (`@Controller('api/...')`)
    e module; importar o module em `backend/src/app.module.ts`. Para o Swagger: `@ApiProperty`
    nos campos da entity e do DTO, `@ApiTags`/`@ApiOperation`/`@Api...Response` no controller
-   (modelo: `src/livros/`). O corpo das rotas usa o DTO, nunca `Partial<Entidade>`.
-2. Exemplos das rotas em `backend/Api.http`
+   (modelo: `src/usuarios/`). O corpo das rotas usa o DTO, nunca `Partial<Entidade>`.
+2. Exemplos das rotas em `backend/usuarios.http`
 3. Funções em `frontend/src/services/api.ts`
 4. View em `frontend/src/views/` + rota em `frontend/src/router/index.ts`
 5. Atualizar a tabela de rotas no `README.md`
@@ -67,8 +67,7 @@ localhost:3000        localhost:8080         (online, fora do Docker)
 
 ## Etapa atual da interface
 
-- O frontend mostra somente o cadastro de leitores da Biblioteca Brasil.
+- O frontend contém cadastro e login, solicitados pelo usuário.
 - A página inicial e os caminhos antigos redirecionam para /cadastro.
-- Não recriar telas de login, acervo, cadastro de livros ou retiradas sem solicitação.
-- O backend e o SQL da biblioteca ficam preservados para as etapas seguintes.
+- Cadastro e login estão autorizados. Não recriar livros ou retiradas sem solicitação.
 - Manter node_modules local para o VS Code reconhecer imports e tipos; não incluir no Git.

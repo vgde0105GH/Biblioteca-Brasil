@@ -1,0 +1,195 @@
+@import "./estrutura-conta.css";
+@import "./campos-conta.css";
+@import "./botoes-conta.css";
+@import "./animacoes-conta.css";
+
+.cartao-cadastro {
+  position: relative;
+  padding: 30px 34px;
+  border: 1px solid #d8e4da;
+  border-radius: 16px;
+  background: #fffffff5;
+  box-shadow: 0 22px 55px -30px #163c324d, 0 3px 14px #16342305;
+  transform-origin: center top;
+}
+
+.cartao-registro,
+.cartao-login {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 30px 32px;
+  border-left: 3px solid #4c966c;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 12px 34px #163c3212;
+}
+
+.cartao-cadastro:focus-within {
+  border-color: #acc7b5;
+  box-shadow: 0 24px 60px -30px #163c3259, 0 0 0 3px #e9f1e97a;
+}
+
+.cabecalho-formulario {
+  text-align: center;
+  margin-bottom: 23px;
+}
+.cabecalho-formulario h1 {
+  margin: 0;
+  font-size: 29px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.9px;
+  color: #183d2c;
+}
+
+.passo-cadastro {
+  display: block;
+  margin-bottom: 9px;
+  color: #587562;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.progresso-cadastro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  list-style: none;
+  margin: 0 0 25px;
+  padding: 0;
+}
+
+.progresso-cadastro li {
+  position: relative;
+  border-top: 3px solid #e9eeea;
+  padding-top: 9px;
+  font-size: 11px;
+  color: #78867d;
+}
+
+.progresso-cadastro li.etapa-concluida {
+  border-color: var(--verde);
+}
+.progresso-cadastro li.etapa-ativa {
+  border-color: #c8dbce;
+  color: var(--verde);
+  font-weight: 600;
+}
+
+.progresso-cadastro li.etapa-ativa::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #327f54;
+  transform-origin: left;
+}
+
+.progresso-cadastro li > span:first-child {
+  margin-right: 6px;
+}
+.formulario-conta {
+  scroll-margin-top: 24px;
+}
+.cartao-registro .formulario-conta {
+  width: 100%;
+}
+.campos-cadastro {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.conteudo-etapa {
+  display: grid;
+  gap: 17px;
+}
+.linha-conta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 15px;
+}
+.acoes-etapa {
+  display: flex;
+}
+.rodape-formulario {
+  margin-top: 19px;
+}
+.campo-cep {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+}
+.dica-cep {
+  font-size: 11px;
+  color: var(--suave);
+  margin: -6px 0 0;
+}
+
+.aviso-conta {
+  color: #963446;
+  background: #fff4f6;
+  border: 1px solid #f0d6dc;
+  border-radius: 7px;
+  font-size: 12px;
+  padding: 12px;
+  margin: 0;
+}
+
+.acesso-existente {
+  border-top: 1px solid #e6ece7;
+  margin-top: 19px;
+  padding-top: 16px;
+  text-align: center;
+}
+
+.sucesso-cadastro {
+  width: 100%;
+  text-align: center;
+}
+.sucesso-cadastro h1 {
+  font-size: 29px;
+  letter-spacing: -1px;
+  line-height: 1.25;
+  margin: 0 0 16px;
+}
+.sucesso-cadastro p {
+  color: var(--suave);
+  margin: 0 0 25px;
+}
+.cartao-login .cabecalho-formulario {
+  margin-bottom: 28px;
+}
+.cartao-login .aviso-conta {
+  margin-bottom: 18px;
+}
+.estado-login {
+  color: var(--suave);
+  font-size: 14px;
+  margin: 0;
+}
+
+@media (max-width: 620px) {
+  .cartao-cadastro {
+    padding: 25px 22px;
+  }
+  .cartao-registro,
+  .cartao-login {
+    padding: 25px 21px;
+  }
+  .cabecalho-formulario h1 {
+    font-size: 27px;
+  }
+  .linha-conta {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+  .campo-cep {
+    gap: 8px;
+  }
+}

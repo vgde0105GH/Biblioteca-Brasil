@@ -1,0 +1,192 @@
+.pagina-conta::before {
+  animation: luz-esquerda 1600ms ease-out both;
+}
+.pagina-conta::after {
+  animation: luz-direita 1800ms ease-out both;
+}
+.marca-icone {
+  animation: movimento-marca 1200ms ease-in-out both;
+}
+.banner-brasil {
+  animation: entrada-campo 600ms ease-out both;
+}
+.cartao-cadastro {
+  animation: entrada-cartao 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: box-shadow 400ms ease, border-color 400ms ease;
+}
+.progresso-cadastro li {
+  transition: color 250ms ease, border-color 350ms ease;
+}
+.progresso-cadastro li.etapa-ativa::before {
+  animation: revelar-acento 480ms ease-out both;
+}
+.campo-conta input {
+  transition: border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+}
+.campo-conta label {
+  transition: color 180ms ease;
+}
+.conteudo-etapa > * {
+  animation: entrada-campo 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.conteudo-etapa > :nth-child(2) {
+  animation-delay: 45ms;
+}
+.conteudo-etapa > :nth-child(3) {
+  animation-delay: 90ms;
+}
+.conteudo-etapa > :nth-child(4) {
+  animation-delay: 135ms;
+}
+.conteudo-etapa > :nth-child(5) {
+  animation-delay: 180ms;
+}
+.conteudo-etapa > :nth-child(n + 6) {
+  animation-delay: 225ms;
+}
+.conteudo-etapa > .acoes-etapa {
+  animation: none;
+}
+.etapa-enter-active {
+  transition: opacity 260ms ease, transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.etapa-leave-active {
+  transition: opacity 160ms ease, transform 180ms ease;
+}
+.etapa-enter-from {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.etapa-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.acao-conta::after {
+  animation: brilho-botao 1800ms 500ms ease-in-out both;
+}
+.acao-conta,
+.acao-cep,
+.botao-voltar {
+  transition: background-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+.botao-login {
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+.acao-conta:not(:disabled):active,
+.acao-cep:not(:disabled):active,
+.botao-voltar:active {
+  transform: translateY(1px) scale(0.985);
+}
+.sucesso-cadastro {
+  animation: entrada-sucesso 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .acao-conta:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 17px #19523526;
+  }
+  .acao-conta:hover:not(:disabled)::after {
+    animation: passagem-brilho 650ms ease-out both;
+  }
+  .acao-cep:hover:not(:disabled),
+  .botao-voltar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 9px #19523512;
+  }
+  .botao-login:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px #19523512;
+  }
+}
+
+@keyframes entrada-cartao {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes entrada-campo {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes movimento-marca {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(-3deg);
+  }
+}
+@keyframes entrada-sucesso {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes luz-esquerda {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(18%, 18%);
+  }
+}
+@keyframes luz-direita {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-20%, -16%);
+  }
+}
+@keyframes revelar-acento {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes brilho-botao {
+  0%,
+  76% {
+    transform: translateX(-140%);
+  }
+  100% {
+    transform: translateX(140%);
+  }
+}
+@keyframes passagem-brilho {
+  from {
+    transform: translateX(-140%);
+  }
+  to {
+    transform: translateX(140%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pagina-conta *,
+  .pagina-conta *::before,
+  .pagina-conta *::after,
+  .pagina-conta::before,
+  .pagina-conta::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

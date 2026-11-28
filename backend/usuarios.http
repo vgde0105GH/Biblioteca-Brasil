@@ -1,0 +1,43 @@
+@api = http://localhost:8080
+
+### Conferir a API
+GET {{api}}/api
+
+### Cadastrar leitor (dados fictícios; use somente para teste)
+POST {{api}}/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Leitora de Exemplo",
+  "email": "leitora@example.com",
+  "cpf": "529.982.247-25",
+  "telefone": "(11) 99999-1234",
+  "cep": "01001000",
+  "logradouro": "Praça da Sé",
+  "numero": "1",
+  "complemento": "",
+  "bairro": "Sé",
+  "cidade": "São Paulo",
+  "estado": "SP",
+  "senha": "LeituraDeExemplo123",
+  "confirmarSenha": "LeituraDeExemplo123",
+  "categoria": "individual"
+}
+
+### Dados incompletos devem retornar 400
+POST {{api}}/api/usuarios
+Content-Type: application/json
+
+{ "nome": "" }
+
+### Entrar após cadastrar
+POST {{api}}/api/usuarios/sessao
+Content-Type: application/json
+
+{ "email": "leitora@example.com", "senha": "LeituraDeExemplo123" }
+
+### Consultar sessão (cookie do login)
+GET {{api}}/api/usuarios/sessao
+
+### Sair
+DELETE {{api}}/api/usuarios/sessao

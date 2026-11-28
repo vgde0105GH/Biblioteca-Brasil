@@ -1,0 +1,89 @@
+.campo-conta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.campo-conta label {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 7px;
+}
+
+.campo-conta input {
+  width: 100%;
+  height: 48px;
+  min-height: 46px;
+  padding: 11px 12px;
+  border: 1px solid #d9e3db;
+  border-radius: 6px;
+  background: #fcfdfb;
+  color: var(--tinta);
+  font-size: 14px;
+}
+
+.campo-conta input::placeholder {
+  color: #929e96;
+  opacity: 1;
+}
+.campo-conta input:hover {
+  border-color: #a7beb0;
+}
+.campo-conta input:focus {
+  border-color: var(--verde);
+  outline: 2px solid #246c491c;
+  outline-offset: 1px;
+  background: #fff;
+  box-shadow: 0 0 0 4px #246c490b;
+}
+
+.campo-conta input[aria-invalid="true"] {
+  border-color: #b64754;
+}
+.campo-conta input[aria-invalid="true"]:focus {
+  outline-color: #b6475428;
+}
+.campo-conta:focus-within label {
+  color: #23764b;
+}
+.campo-conta:has(input[aria-invalid="true"]) > label {
+  color: #a73343;
+}
+.campo-conta small {
+  color: var(--suave);
+  font-size: 10px;
+  margin-top: 6px;
+}
+.campo-conta .erro-campo {
+  color: #ac293e;
+  font-size: 11px;
+}
+.controle-senha {
+  position: relative;
+}
+.controle-senha input {
+  padding-right: 61px;
+}
+
+.alternar-senha {
+  position: absolute;
+  right: 8px;
+  top: 10px;
+  min-height: 26px;
+  padding: 2px 3px;
+  border: 0;
+  background: none;
+  color: #53695b;
+  font-size: 10px !important;
+  cursor: pointer;
+}
+
+@media (max-width: 620px) {
+  .campo-conta input {
+    font-size: 16px;
+    min-height: 48px;
+  }
+  .alternar-senha {
+    top: 11px;
+  }
+}

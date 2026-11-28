@@ -1,0 +1,212 @@
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fontes/space-grotesk.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+.pagina-conta {
+  --tinta: #203a2e;
+  --suave: #6b7970;
+  --verde: #246c49;
+  --verde-escuro: #195235;
+  --borda: #dce4df;
+  display: flow-root;
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  min-height: 100svh;
+  background: #f5f8f3;
+  color: var(--tinta);
+  font: 14px/1.5 "Space Grotesk", Arial, sans-serif;
+}
+
+.pagina-conta *,
+.pagina-conta *::before,
+.pagina-conta *::after {
+  box-sizing: border-box;
+}
+
+.pagina-conta a {
+  color: inherit;
+}
+.pagina-conta button,
+.pagina-conta input {
+  font: inherit;
+}
+
+.pagina-conta :focus-visible {
+  outline: 3px solid #327e57;
+  outline-offset: 3px;
+}
+
+.pagina-conta::before,
+.pagina-conta::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  width: min(70vw, 950px);
+  height: min(70vw, 950px);
+  min-width: 360px;
+  min-height: 360px;
+  border-radius: 50%;
+  opacity: 0.32;
+  will-change: transform;
+}
+
+.pagina-conta::before {
+  top: -38%;
+  left: -18%;
+  background: radial-gradient(circle, #c6e1cf 0%, #dcebdc80 34%, transparent 69%);
+}
+
+.pagina-conta::after {
+  right: -18%;
+  bottom: -45%;
+  background: radial-gradient(circle, #eadbb1a6 0%, #f1e7cb69 34%, transparent 69%);
+}
+
+.topo-conta {
+  width: min(1080px, calc(100% - 64px));
+  min-height: 96px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.banner-brasil {
+  width: min(1080px, calc(100% - 64px));
+  min-height: 96px;
+  margin: 24px auto 0;
+  padding: 16px 26px;
+  border: 1px solid #28523d;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #153e2c, #225b3f);
+  box-shadow: 0 8px 24px #143d2910;
+}
+
+.marca-biblioteca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.marca-icone {
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  background: var(--verde);
+  border-radius: 10px;
+  box-shadow: 0 5px 12px #246c491a;
+}
+
+.marca-icone path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.marca-nome {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.9px;
+}
+
+.marca-nome > span {
+  margin-left: 4px;
+  color: var(--verde);
+}
+.banner-brasil .marca-nome {
+  color: #fff;
+  font-size: 24px;
+}
+.banner-brasil .marca-nome > span {
+  color: #d5e5b3;
+}
+
+.banner-brasil .marca-icone {
+  background: #ffffff12;
+  border: 1px solid #ffffff20;
+  box-shadow: none;
+}
+
+.bandeira-brasil {
+  display: block;
+  width: 80px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px #051c2226;
+}
+
+.conteudo-cadastro {
+  width: min(590px, calc(100% - 40px));
+  min-height: calc(100svh - 172px);
+  margin: 20px auto 32px;
+  display: grid;
+  align-items: center;
+}
+
+.pular-cadastro {
+  position: fixed;
+  top: -100px;
+  left: 12px;
+  padding: 10px;
+  background: #fff;
+  z-index: 5;
+}
+.pular-cadastro:focus {
+  top: 12px;
+}
+
+@media (max-width: 620px) {
+  .topo-conta {
+    width: calc(100% - 36px);
+    min-height: 78px;
+    gap: 12px;
+  }
+  .banner-brasil {
+    width: calc(100% - 28px);
+    min-height: 86px;
+    margin-top: 14px;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .marca-icone {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+  .marca-nome {
+    font-size: 18px;
+  }
+  .banner-brasil .marca-nome {
+    font-size: 17px;
+    letter-spacing: -0.6px;
+  }
+  .banner-brasil .marca-biblioteca {
+    gap: 8px;
+  }
+  .banner-brasil .marca-icone {
+    width: 28px;
+    height: 28px;
+    padding: 5px;
+    flex-shrink: 0;
+  }
+  .bandeira-brasil {
+    width: 60px;
+    height: 42px;
+  }
+  .conteudo-cadastro {
+    width: calc(100% - 28px);
+    min-height: 0;
+    margin: 16px auto 28px;
+  }
+}

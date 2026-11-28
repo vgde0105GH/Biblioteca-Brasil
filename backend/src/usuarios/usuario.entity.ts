@@ -1,15 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty } from "@nestjs/swagger";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export enum CategoriaConta {
-  Individual = 'individual',
-  Institucional = 'institucional',
-  Funcionario = 'funcionario',
-  Admin = 'admin',
-  Dev = 'dev',
+  Individual = "individual",
+  Institucional = "institucional",
+  Funcionario = "funcionario",
+  Admin = "admin",
+  Dev = "dev",
 }
 
-@Entity('usuarios')
+@Entity("usuarios")
 export class Usuario {
   @ApiProperty()
   @PrimaryGeneratedColumn({ unsigned: true })
@@ -24,7 +24,7 @@ export class Usuario {
   email!: string;
 
   @ApiProperty()
-  @Column({ type: 'char', length: 11, unique: true })
+  @Column({ type: "char", length: 11, unique: true })
   cpf!: string;
 
   @ApiProperty()
@@ -32,7 +32,7 @@ export class Usuario {
   telefone!: string;
 
   @ApiProperty()
-  @Column({ type: 'char', length: 8 })
+  @Column({ type: "char", length: 8 })
   cep!: string;
 
   @ApiProperty()
@@ -44,7 +44,7 @@ export class Usuario {
   numero!: string;
 
   @ApiProperty({ nullable: true })
-  @Column({ type: 'varchar', length: 100, nullable: true })
+  @Column({ type: "varchar", length: 100, nullable: true })
   complemento!: string | null;
 
   @ApiProperty()
@@ -56,13 +56,13 @@ export class Usuario {
   cidade!: string;
 
   @ApiProperty()
-  @Column({ type: 'char', length: 2 })
+  @Column({ type: "char", length: 2 })
   estado!: string;
 
-  @Column({ name: 'senha_hash', length: 161, select: false })
+  @Column({ name: "senha_hash", length: 161, select: false })
   senhaHash!: string;
 
   @ApiProperty({ enum: CategoriaConta })
-  @Column({ type: 'enum', enum: CategoriaConta })
+  @Column({ type: "enum", enum: CategoriaConta })
   categoria!: CategoriaConta;
 }
